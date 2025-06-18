@@ -2,6 +2,7 @@
 import './App.css'
 import { DashBoard } from './Components/pages/DashBoard'
 import { LandingPage } from './Components/pages/LandingPage'
+import { Login } from './Components/pages/Login'
 import { Projects } from './Components/pages/Projects'
 import { Register } from './Components/pages/Register'
 import { Settings } from './Components/pages/Settings'
@@ -15,6 +16,7 @@ function App() {
   <Projects/>
   <Settings/>
   <Register/>
+  <Login/>
   </>
   )
 }
