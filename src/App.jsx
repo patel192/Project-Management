@@ -1,12 +1,14 @@
 
 import './App.css'
-import { LandingPage } from './Components/LandingPage'
+import { DashBoard } from './Components/pages/DashBoard'
+import { LandingPage } from './Components/pages/LandingPage'
 
 function App() {
  
   return (
   <>
   <LandingPage/>
+  <DashBoard/>
   </>
   )
 }
