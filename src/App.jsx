@@ -7,6 +7,7 @@ import { Projects } from './Components/pages/Projects'
 import { ProjectShare } from './Components/pages/ProjectShare'
 import { ProjectVisualizer } from './Components/pages/ProjectVisualizer'
 import { Register } from './Components/pages/Register'
+import { ReportsAndAnalytics } from './Components/pages/ReportsAndAnalytics'
 import { Settings } from './Components/pages/Settings'
 import { TeamManagement } from './Components/pages/TeamManagement'
 
@@ -23,6 +24,7 @@ function App() {
   <ProjectVisualizer/>
   <ProjectShare/>
   <TeamManagement/>
+  <ReportsAndAnalytics/>
   </>
   )
 }
