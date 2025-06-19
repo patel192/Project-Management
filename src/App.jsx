@@ -8,6 +8,7 @@ import { ProjectShare } from './Components/pages/ProjectShare'
 import { ProjectVisualizer } from './Components/pages/ProjectVisualizer'
 import { Register } from './Components/pages/Register'
 import { Settings } from './Components/pages/Settings'
+import { TeamManagement } from './Components/pages/TeamManagement'
 
 function App() {
  
@@ -21,6 +22,7 @@ function App() {
   <Login/>
   <ProjectVisualizer/>
   <ProjectShare/>
+  <TeamManagement/>
   </>
   )
 }
