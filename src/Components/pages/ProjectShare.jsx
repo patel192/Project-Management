@@ -1,175 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, onSnapshot, updateDoc, setDoc } from 'firebase/firestore';
-
 export const ProjectShare = () => {
-    const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [isAuthReady, setIsAuthReady] = useState(false); // To ensure Firestore operations wait for auth
-  const [projectData, setProjectData] = useState(null);
+    const [projectData, setProjectData] = useState({
+    id: 'simulated-project-zeta',
+    name: 'Quantum Nexus Initiative',
+    description: "Architecting the next-gen inter-network communication protocol. High-risk, high-reward.",
+    status: 'In Progress',
+    ownerId: 'SYSTEM_ADMIN_PR0T0COL',
+    createdAt: '2025-05-15T10:30:00.000Z',
+  });
+
   const [shareableLink, setShareableLink] = useState('');
-  const [isCollaborative, setIsCollaborative] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isCollaborative, setIsCollaborative] = useState(false); // Local state for collaboration toggle
   const [copyStatus, setCopyStatus] = useState(''); // State for copy feedback
   const [toggleFeedback, setToggleFeedback] = useState(''); // State for toggle feedback
 
-  // --- Configuration & Initialization (from __app_id, __firebase_config, __initial_auth_token) ---
-  const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-  const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-  const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-  // Mock Project ID for demonstration. In a real app, this would come from URL params.
-  const mockProjectId = 'shared-project-alpha';
-
+  // Simulate loading project data (no actual fetch, just a delay)
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    try {
-      const app = initializeApp(firebaseConfig);
-      const firestore = getFirestore(app);
-      const firebaseAuth = getAuth(app);
-
-      setDb(firestore);
-      setAuth(firebaseAuth);
-
-      const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
-        if (user) {
-          setUserId(user.uid);
-          setIsAuthReady(true);
-        } else {
-          // If no user, try to sign in with custom token or anonymously
-          try {
-            if (initialAuthToken) {
-              await signInWithCustomToken(firebaseAuth, initialAuthToken);
-              setUserId(firebaseAuth.currentUser.uid);
-            } else {
-              await signInAnonymously(firebaseAuth);
-              setUserId(firebaseAuth.currentUser.uid); // Will be a random ID for anonymous
-            }
-            setIsAuthReady(true);
-          } catch (authError) {
-            console.error("Firebase Auth Error:", authError);
-            setError("Failed to authenticate. Collaboration features may be limited.");
-            setIsAuthReady(true); // Still set to true to allow UI to render
-          }
-        }
-      });
-
-      return () => unsubscribe(); // Cleanup auth listener
-    } catch (e) {
-      console.error("Failed to initialize Firebase:", e);
-      setError("Failed to initialize core services. Please try again.");
+    const timer = setTimeout(() => {
       setLoading(false);
-    }
-  }, []);
+      // Generate a mock shareable link based on a "mock" project ID
+      // In a real app, 'window.location.origin' would be your deployed app's URL
+      setShareableLink(`${window.location.origin}/view_project?id=${projectData.id}`);
+    }, 1000); // Simulate network delay
 
-  useEffect(() => {
-    if (db && isAuthReady && userId && mockProjectId) {
-      setLoading(true);
-      setError(null);
+    return () => clearTimeout(timer);
+  }, [projectData.id]);
 
-      const projectDocRef = doc(db, `/artifacts/${appId}/public/data/projects/${mockProjectId}`);
-
-      const unsubscribe = onSnapshot(projectDocRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setProjectData(data);
-          setIsCollaborative(data.isCollaborative || false);
-          setLoading(false);
-        } else {
-          // If project doesn't exist, create a default one for demonstration
-          console.warn(`Project with ID ${mockProjectId} not found. Creating a default.`);
-          setDoc(projectDocRef, {
-            name: `New Shared Project: ${mockProjectId}`,
-            description: "This is a collaborative project shared via link.",
-            status: "Planning",
-            isCollaborative: false,
-            ownerId: userId,
-            createdAt: new Date().toISOString(),
-          }).then(() => {
-            console.log("Default project created.");
-            // onSnapshot will pick this up immediately, so no need to setProjectData here.
-          }).catch(err => {
-            console.error("Error creating default project:", err);
-            setError("Could not create default project.");
-            setLoading(false);
-          });
-        }
-      }, (err) => {
-        console.error("Error fetching project data:", err);
-        setError("Failed to load project data. Please check your connection.");
-        setLoading(false);
-      });
-
-      return () => unsubscribe(); // Cleanup snapshot listener
-    }
-  }, [db, isAuthReady, userId, appId, mockProjectId]);
-
-  useEffect(() => {
-    // Generate shareable link
-    if (mockProjectId) {
-      // In a real deployed app, window.location.origin would be your app's base URL
-      // For Canvas environment, this will be the iframe's origin.
-      setShareableLink(`${window.location.origin}/share?project=${mockProjectId}`);
-    }
-  }, [mockProjectId]);
-
-  const handleToggleCollaboration = async () => {
-    if (!db || !projectData || !userId) {
-      setError("System not ready or project data missing.");
-      return;
-    }
-
+  const handleToggleCollaboration = () => {
     const newCollaborativeStatus = !isCollaborative;
-    const projectDocRef = doc(db, `/artifacts/${appId}/public/data/projects/${mockProjectId}`);
-
-    try {
-      await updateDoc(projectDocRef, {
-        isCollaborative: newCollaborativeStatus
-      });
-      setIsCollaborative(newCollaborativeStatus); // Optimistic update
-      setToggleFeedback(newCollaborativeStatus ? 'Collaboration ENABLED' : 'Collaboration DISABLED');
-      setTimeout(() => setToggleFeedback(''), 2000); // Clear message
-    } catch (err) {
-      console.error("Error updating collaboration status:", err);
-      setError("Failed to update collaboration status. Access denied or network issue.");
-      setToggleFeedback('Update FAILED!');
-      setTimeout(() => setToggleFeedback(''), 2000); // Clear message
-    }
+    setIsCollaborative(newCollaborativeStatus); // Update local state
+    setToggleFeedback(newCollaborativeStatus ? 'Collaboration ENABLED' : 'Collaboration DISABLED');
+    setTimeout(() => setToggleFeedback(''), 2000); // Clear message
   };
 
   const copyToClipboard = () => {
     if (shareableLink) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(shareableLink)
-            .then(() => {
-              setCopyStatus('LINK COPIED!');
-              setTimeout(() => setCopyStatus(''), 2000); // Clear message after 2 seconds
-            })
-            .catch(err => {
-              console.error('Failed to copy text: ', err);
-              setCopyStatus('COPY FAILED!');
-              setTimeout(() => setCopyStatus(''), 2000); // Clear message
-            });
-        } else {
-          // Fallback for browsers that don't support navigator.clipboard
-          const textArea = document.createElement("textarea");
-          textArea.value = shareableLink;
-          document.body.appendChild(textArea);
-          textArea.focus();
-          textArea.select();
-          try {
-            document.execCommand('copy');
-            setCopyStatus('LINK COPIED (fallback)!');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareableLink)
+          .then(() => {
+            setCopyStatus('LINK COPIED!');
             setTimeout(() => setCopyStatus(''), 2000);
-          } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
-            setCopyStatus('COPY FAILED (fallback)!');
+          })
+          .catch(err => {
+            console.error('Failed to copy text: ', err);
+            setCopyStatus('COPY FAILED!');
             setTimeout(() => setCopyStatus(''), 2000);
-          }
-          document.body.removeChild(textArea);
+          });
+      } else {
+        // Fallback for browsers that don't support navigator.clipboard
+        const textArea = document.createElement("textarea");
+        textArea.value = shareableLink;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          setCopyStatus('LINK COPIED (fallback)!');
+          setTimeout(() => setCopyStatus(''), 2000);
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+          setCopyStatus('COPY FAILED (fallback)!');
+          setTimeout(() => setCopyStatus(''), 2000);
         }
+        document.body.removeChild(textArea);
+      }
     }
   };
 
@@ -177,22 +72,6 @@ export const ProjectShare = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-950 font-inter text-gray-100">
         <p className="text-xl text-fuchsia-400 animate-pulse">INITIATING SHARE PROTOCOL // LOADING DATA...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 font-inter text-red-400">
-        <p className="text-xl">ERROR: {error}</p>
-      </div>
-    );
-  }
-
-  if (!projectData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-950 font-inter text-gray-400">
-        <p className="text-xl">WARNING: No project data available. System offline or ID corrupted.</p>
       </div>
     );
   }
@@ -280,7 +159,7 @@ export const ProjectShare = () => {
       <header className="flex justify-between items-center bg-zinc-900 p-4 border-b border-cyan-600/40 shadow-md shadow-cyan-500/20">
         <h1 className="text-3xl font-bold text-fuchsia-400">SHARE PROTOCOL // COLLABORATE</h1>
         <div className="flex items-center space-x-4">
-          <span className="text-gray-300">CURRENT USER ID: <span className="text-cyan-400">{userId || 'N/A'}</span></span>
+          <span className="text-gray-300">CURRENT USER ID: <span className="text-cyan-400">ANONYMOUS_USER_01</span></span>
           <img src="https://i.pravatar.cc/40?img=6" alt="User Avatar" className="h-10 w-10 rounded-full border-2 border-fuchsia-400" />
         </div>
       </header>
@@ -365,8 +244,8 @@ export const ProjectShare = () => {
             )}
             <p className="text-gray-500 text-sm italic">
               {isCollaborative
-                ? "WARNING: Collaboration ENABLED. Any user with the share link will have read AND write permissions to this project data. Ensure you trust the recipients."
-                : "INFO: Collaboration DISABLED. The share link provides read-only access. Project data is secured from external modification. Only the owner can make changes."
+                ? "WARNING: Collaboration ENABLED. Any user with the share link will have read AND write permissions to this project data. This setting is for demonstration purposes only. In a real application, this would control actual backend access."
+                : "INFO: Collaboration DISABLED. The share link provides read-only access. Project data is secured from external modification. This setting is for demonstration purposes only."
               }
             </p>
           </div>
