@@ -4,6 +4,7 @@ import { DashBoard } from './Components/pages/DashBoard'
 import { LandingPage } from './Components/pages/LandingPage'
 import { Login } from './Components/pages/Login'
 import { Notifications } from './Components/pages/Notifications'
+import ProjectCalendar from './Components/pages/ProjectCalender'
 import { Projects } from './Components/pages/Projects'
 import { ProjectShare } from './Components/pages/ProjectShare'
 import { ProjectVisualizer } from './Components/pages/ProjectVisualizer'
@@ -27,6 +28,7 @@ function App() {
   <TeamManagement/>
   <ReportsAndAnalytics/>
   <Notifications/>
+  <ProjectCalendar/>
   </>
   )
 }
