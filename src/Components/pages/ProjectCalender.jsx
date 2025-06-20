@@ -3,7 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 function ProjectCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // Mock Events for the Calendar
+ 
   const [events] = useState([
     { id: 'event001', date: '2025-06-25', title: 'Phase 1 Review - QNI', type: 'milestone', project: 'Quantum Nexus Initiative' },
     { id: 'event002', date: '2025-06-28', title: 'UI/UX Mockup Finalization', type: 'task', project: 'Neural Link Interface' },
@@ -15,22 +15,22 @@ function ProjectCalendar() {
   ]);
 
   const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
-  const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay(); // 0 for Sunday, 6 for Saturday
+  const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay(); 
 
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth(); // 0-indexed
+  const month = currentDate.getMonth(); 
 
   const totalDays = daysInMonth(year, month);
-  const startDay = firstDayOfMonth(year, month); // Day of the week for the 1st of the month
+  const startDay = firstDayOfMonth(year, month);
 
-  // Create an array representing the days of the month for rendering the grid
+
   const calendarDays = useMemo(() => {
     const daysArray = [];
-    // Add empty placeholders for days before the 1st of the month
+    
     for (let i = 0; i < startDay; i++) {
       daysArray.push(null);
     }
-    // Add actual days
+   
     for (let i = 1; i <= totalDays; i++) {
       daysArray.push(i);
     }
@@ -45,10 +45,10 @@ function ProjectCalendar() {
 
   const getEventTypeColor = (type) => {
     switch (type) {
-      case 'milestone': return 'text-fuchsia-400'; // Pink/Purple for milestones
-      case 'deadline': return 'text-red-400';      // Red for deadlines
-      case 'task': return 'text-cyan-400';         // Cyan for tasks
-      case 'meeting': return 'text-lime-400';      // Green for meetings
+      case 'milestone': return 'text-fuchsia-400'; 
+      case 'deadline': return 'text-red-400';     
+      case 'task': return 'text-cyan-400';        
+      case 'meeting': return 'text-lime-400';      
       default: return 'text-gray-300';
     }
   };
@@ -78,7 +78,7 @@ function ProjectCalendar() {
 
   return (
     <div className="min-h-screen bg-zinc-950 font-inter text-gray-100 flex flex-col">
-      {/* Local Styles for Animations */}
+    
       <style>
         {`
         @keyframes slide-diagonal-x {
@@ -105,7 +105,7 @@ function ProjectCalendar() {
         `}
       </style>
 
-      {/* Header */}
+      
       <header className="flex justify-between items-center bg-zinc-900 p-4 border-b border-cyan-600/40 shadow-md shadow-cyan-500/20">
         <h1 className="text-3xl font-bold text-fuchsia-400">PROJECT CALENDAR // CHRONOS LOG</h1>
         <div className="flex items-center space-x-4">
@@ -134,8 +134,8 @@ function ProjectCalendar() {
       </header>
 
       {/* Calendar Content */}
-      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950 relative animate-border-glow-calendar"> {/* Apply border animation here */}
-        {/* Animated Background Grid/Lines */}
+      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950 relative animate-border-glow-calendar"> 
+        
         <div className="absolute inset-0 z-0 opacity-5">
           <svg className="w-[200%] h-[200%]" style={{ transform: 'translateX(-50%) translateY(-50%)' }}>
             <defs>
