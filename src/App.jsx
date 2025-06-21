@@ -1,5 +1,6 @@
 
 import './App.css'
+import ActivityLog from './Components/pages/ActivityLog'
 import CommunicationHub from './Components/pages/CommunicationHub'
 import { DashBoard } from './Components/pages/DashBoard'
 import { FileManagement } from './Components/pages/FileManagement'
@@ -37,6 +38,7 @@ function App() {
   <FinancialOverview/>
   <CommunicationHub/>
   <ProjectSettings/>
+  <ActivityLog/>
   </>
   )
 }
