@@ -9,6 +9,7 @@ import { Login } from './Components/pages/Login'
 import { Notifications } from './Components/pages/Notifications'
 import ProjectCalendar from './Components/pages/ProjectCalender'
 import { Projects } from './Components/pages/Projects'
+import ProjectSettings from './Components/pages/ProjectSettings'
 import { ProjectShare } from './Components/pages/ProjectShare'
 import { ProjectVisualizer } from './Components/pages/ProjectVisualizer'
 import { Register } from './Components/pages/Register'
@@ -35,6 +36,7 @@ function App() {
   <FileManagement/>
   <FinancialOverview/>
   <CommunicationHub/>
+  <ProjectSettings/>
   </>
   )
 }
