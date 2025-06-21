@@ -1,5 +1,6 @@
 
 import './App.css'
+import CommunicationHub from './Components/pages/CommunicationHub'
 import { DashBoard } from './Components/pages/DashBoard'
 import { FileManagement } from './Components/pages/FileManagement'
 import FinancialOverview from './Components/pages/FinancialOverview'
@@ -33,6 +34,7 @@ function App() {
   <ProjectCalendar/>
   <FileManagement/>
   <FinancialOverview/>
+  <CommunicationHub/>
   </>
   )
 }
