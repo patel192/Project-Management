@@ -5,6 +5,7 @@ import CommunicationHub from './Components/pages/CommunicationHub'
 import { DashBoard } from './Components/pages/DashBoard'
 import { FileManagement } from './Components/pages/FileManagement'
 import FinancialOverview from './Components/pages/FinancialOverview'
+import KnowledgeBase from './Components/pages/KnowledgeBase'
 import { LandingPage } from './Components/pages/LandingPage'
 import { Login } from './Components/pages/Login'
 import { Notifications } from './Components/pages/Notifications'
@@ -39,6 +40,7 @@ function App() {
   <CommunicationHub/>
   <ProjectSettings/>
   <ActivityLog/>
+  <KnowledgeBase/>
   </>
   )
 }
