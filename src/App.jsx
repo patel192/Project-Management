@@ -24,6 +24,7 @@ function App() {
     <>
       <ActivityLog />
       <CommunicationHub/>
+      <DashBoard/>
     </>
   );
 }
