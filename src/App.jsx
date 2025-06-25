@@ -17,6 +17,7 @@ import { ProjectVisualizer } from './Components/pages/ProjectVisualizer'
 import { Register } from './Components/pages/Register'
 import { ReportsAndAnalytics } from './Components/pages/ReportsAndAnalytics'
 import { Settings } from './Components/pages/Settings'
+import Tasks from './Components/pages/Tasks'
 import { TeamManagement } from './Components/pages/TeamManagement'
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
   <ProjectSettings/>
   <ActivityLog/>
   <KnowledgeBase/>
+  <Tasks/>
   </>
   )
 }
