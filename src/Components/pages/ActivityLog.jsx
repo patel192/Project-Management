@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
 function ActivityLog() {
-  // Mock Activity Log Data
   const [activities, setActivities] = useState([
     { id: 'act001', timestamp: '2025-06-20T10:30:00Z', user: 'Commander Hex', action: 'Project "Quantum Nexus Initiative" updated status to "High Alert".', type: 'project_update' },
     { id: 'act002', timestamp: '2025-06-20T10:25:00Z', user: 'Synth_Engineer', action: 'Task "Develop secure API endpoint" marked as completed.', type: 'task_completion' },
@@ -18,23 +17,18 @@ function ActivityLog() {
   const [filterType, setFilterType] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Memoize filtered activities for performance
   const filteredActivities = useMemo(() => {
-    let currentActivities = activities;
-
-    if (filterType !== 'All') {
-      currentActivities = currentActivities.filter(activity => activity.type === filterType);
-    }
-
+    let current = activities;
+    if (filterType !== 'All') current = current.filter(a => a.type === filterType);
     if (searchTerm) {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      currentActivities = currentActivities.filter(activity =>
-        activity.user.toLowerCase().includes(lowerCaseSearchTerm) ||
-        activity.action.toLowerCase().includes(lowerCaseSearchTerm) ||
-        activity.type.toLowerCase().includes(lowerCaseSearchTerm)
+      const s = searchTerm.toLowerCase();
+      current = current.filter(a =>
+        a.user.toLowerCase().includes(s) ||
+        a.action.toLowerCase().includes(s) ||
+        a.type.toLowerCase().includes(s)
       );
     }
-    return currentActivities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Sort by newest first
+    return current.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   }, [activities, filterType, searchTerm]);
 
   const getActivityColor = (type) => {
@@ -55,25 +49,23 @@ function ActivityLog() {
 
   const getActivityIcon = (type) => {
     switch (type) {
-      case 'project_update': return '⚙️'; // Gear
-      case 'task_completion': return '✅'; // Checkmark
-      case 'system_event': return '💻'; // Laptop
-      case 'file_upload': return '📁'; // Folder
-      case 'security_event': return '🛡️'; // Shield
-      case 'task_assignment': return '➡️'; // Arrow right
-      case 'user_login': return '👤'; // User
-      case 'report_review': return '📊'; // Bar chart
-      case 'report_generation': return '📈'; // Chart increasing
-      case 'project_creation': return '✨'; // Sparkles
-      default: return '📄'; // Document
+      case 'project_update': return '⚙️';
+      case 'task_completion': return '✅';
+      case 'system_event': return '💻';
+      case 'file_upload': return '📁';
+      case 'security_event': return '🛡️';
+      case 'task_assignment': return '➡️';
+      case 'user_login': return '👤';
+      case 'report_review': return '📊';
+      case 'report_generation': return '📈';
+      case 'project_creation': return '✨';
+      default: return '📄';
     }
   };
 
   return (
     <div className="min-h-screen bg-zinc-950 font-inter text-gray-100 flex flex-col">
-      {/* Local Styles for Animations */}
-      <style>
-        {`
+      <style>{`
         @keyframes slide-diagonal-x {
           0% { transform: translateX(0) translateY(0); }
           100% { transform: translateX(-100%) translateY(-100%); }
@@ -85,22 +77,80 @@ function ActivityLog() {
         .animate-slide-diagonal-x-medium { animation: slide-diagonal-x 45s linear infinite; }
         .animate-slide-diagonal-x-reverse-medium { animation: slide-diagonal-x-reverse 45s linear infinite; }
 
-        /* Border Animation for Activity Log main content */
         @keyframes border-glow-activity {
-          0%, 100% { border-color: rgba(0, 206, 209, 0.5); box-shadow: 0 0 10px rgba(0, 206, 209, 0.3); } /* Cyan */
-          33% { border-color: rgba(236, 72, 153, 0.5); box-shadow: 0 0 10px rgba(236, 72, 153, 0.3); } /* Fuchsia */
-          66% { border-color: rgba(139, 232, 70, 0.5); box-shadow: 0 0 10px rgba(139, 232, 70, 0.3); } /* Lime */
+          0%, 100% { border-color: rgba(0, 206, 209, 0.5); box-shadow: 0 0 10px rgba(0, 206, 209, 0.3); }
+          33% { border-color: rgba(236, 72, 153, 0.5); box-shadow: 0 0 10px rgba(236, 72, 153, 0.3); }
+          66% { border-color: rgba(139, 232, 70, 0.5); box-shadow: 0 0 10px rgba(139, 232, 70, 0.3); }
         }
         .animate-border-glow-activity {
-            border: 2px solid;
-            animation: border-glow-activity 12.5s infinite alternate;
+          border: 2px solid;
+          animation: border-glow-activity 12.5s infinite alternate;
         }
-        `}
-      </style>
 
-      {/* Header */}
+        .activity-card-glow {
+          position: relative;
+          overflow: hidden;
+        }
+        .activity-card-glow::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 0.5rem;
+          background: linear-gradient(135deg, rgba(236,72,153,0.15), rgba(34,211,238,0.15));
+          filter: blur(10px);
+          z-index: -1;
+        }
+
+        .glitch {
+          position: relative;
+          color: #f0f;
+          font-weight: bold;
+        }
+        .glitch::before,
+        .glitch::after {
+          content: attr(data-text);
+          position: absolute;
+          left: 0;
+          width: 100%;
+          overflow: hidden;
+          background: transparent;
+          clip: rect(0, 900px, 0, 0);
+        }
+        .glitch::before {
+          color: #0ff;
+          animation: glitchTop 2s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+          color: #f0f;
+          animation: glitchBottom 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitchTop {
+          0% { clip: rect(0, 9999px, 0, 0); }
+          10% { clip: rect(0, 9999px, 10px, 0); }
+          20% { clip: rect(0, 9999px, 0, 0); }
+        }
+        @keyframes glitchBottom {
+          0% { clip: rect(0, 9999px, 0, 0); }
+          10% { clip: rect(10px, 9999px, 15px, 0); }
+          20% { clip: rect(0, 9999px, 0, 0); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(#0ff, #f0f);
+          border-radius: 5px;
+        }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+      `}</style>
+
       <header className="flex justify-between items-center bg-zinc-900 p-4 border-b border-cyan-600/40 shadow-md shadow-cyan-500/20">
-        <h1 className="text-3xl font-bold text-fuchsia-400">ACTIVITY LOG // OPERATIONAL HISTORY</h1>
+        <h1
+          data-text="ACTIVITY LOG // OPERATIONAL HISTORY"
+          className="glitch text-3xl"
+        >
+          ACTIVITY LOG // OPERATIONAL HISTORY
+        </h1>
         <div className="flex items-center space-x-4">
           <input
             type="text"
@@ -127,17 +177,15 @@ function ActivityLog() {
             <option value="project_creation">Project Creations</option>
           </select>
           <button
-            onClick={() => setActivities([])} // Simulate clearing log
-            className="px-5 py-2 bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold rounded-md shadow-lg shadow-red-500/30 hover:shadow-red-500/60 transform hover:scale-105 transition-all duration-300 border-2 border-red-400 uppercase text-sm"
+            onClick={() => setActivities([])}
+            className="px-5 py-2 bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold rounded-md shadow-lg shadow-red-500/30 hover:shadow-pink-500/80 hover:ring-2 hover:ring-fuchsia-500 hover:animate-pulse transform hover:scale-105 transition-all duration-300 border-2 border-red-400 uppercase text-sm"
           >
             PURGE LOG
           </button>
         </div>
       </header>
 
-      {/* Activity Log Content */}
-      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950 relative animate-border-glow-activity"> {/* Apply border animation here */}
-        {/* Animated Background Grid/Lines */}
+      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950 relative animate-border-glow-activity">
         <div className="absolute inset-0 z-0 opacity-5">
           <svg className="w-[200%] h-[200%]" style={{ transform: 'translateX(-50%) translateY(-50%)' }}>
             <defs>
@@ -155,11 +203,7 @@ function ActivityLog() {
         <div className="relative z-10 max-w-6xl mx-auto space-y-4">
           {filteredActivities.length > 0 ? (
             filteredActivities.map(activity => (
-              <div
-                key={activity.id}
-                className={`p-6 rounded-lg shadow-xl border border-zinc-700/50 bg-zinc-800/50
-                  hover:scale-[1.01] transition-transform duration-200 ease-in-out`}
-              >
+              <div key={activity.id} className={`activity-card-glow p-6 rounded-lg shadow-xl border border-zinc-700/50 bg-zinc-800/50 hover:scale-[1.01] transition-transform duration-200 ease-in-out`}>
                 <div className="flex items-center mb-2">
                   <span className="text-2xl mr-3">{getActivityIcon(activity.type)}</span>
                   <span className={`text-lg font-bold ${getActivityColor(activity.type)} uppercase`}>
