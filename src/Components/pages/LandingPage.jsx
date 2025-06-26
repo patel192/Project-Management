@@ -79,13 +79,7 @@ export const LandingPage = () => {
           initial="hidden"
           animate="visible"
         >
-          {/* Pikachu Placeholder */}
-          <motion.img
-            src="https://placehold.co/200x200/FFD700/000000?text=Pikachu"
-            alt="Companion"
-            className="mb-8 w-40 h-40 md:w-56 md:h-56 object-contain"
-            variants={fadeInUp}
-          />
+          
           <motion.h1
             className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 text-fuchsia-400 drop-shadow-lg animate-pulse"
             variants={fadeInUp}
