@@ -1,250 +1,198 @@
 import React, { useState, useMemo } from 'react';
 
 function KnowledgeBase() {
-  // Mock Knowledge Base Articles
   const [articles] = useState([
     {
       id: 'kb001',
       category: 'System Protocols',
       title: 'Advanced User Authentication Procedures',
-      content: 'This article details the multi-factor authentication (MFA) protocols and biometric verification steps required for secure system access. Ensure all biometric data is encrypted and stored on isolated neural drives.',
+      content:
+        'This article details the multi-factor authentication (MFA) protocols and biometric verification steps required for secure system access. Ensure all biometric data is encrypted and stored on isolated neural drives.',
       tags: ['security', 'authentication', 'protocol', 'system'],
     },
     {
       id: 'kb002',
       category: 'Project Management',
       title: 'Optimizing Agile Sprints in Distributed Teams',
-      content: 'Guidance on conducting efficient agile sprints for teams spread across various network nodes. Focus on asynchronous communication, holographic stand-ups, and real-time task synchronization algorithms.',
+      content:
+        'Guidance on conducting efficient agile sprints for teams spread across various network nodes. Focus on asynchronous communication, holographic stand-ups, and real-time task synchronization algorithms.',
       tags: ['project management', 'agile', 'teams', 'workflow'],
     },
     {
       id: 'kb003',
       category: 'Data Handling',
       title: 'Data Encryption Best Practices for Sensitive Information',
-      content: 'A comprehensive guide to applying military-grade encryption standards (Quantum-AES-256) to all sensitive project data. Includes instructions on key rotation schedules and decentralized storage solutions.',
+      content:
+        'A comprehensive guide to applying military-grade encryption standards (Quantum-AES-256) to all sensitive project data. Includes instructions on key rotation schedules and decentralized storage solutions.',
       tags: ['data', 'encryption', 'security', 'storage'],
     },
     {
       id: 'kb004',
       category: 'Troubleshooting',
       title: 'Resolving Inter-Node Latency Issues',
-      content: 'Steps to diagnose and resolve high latency problems between different operational nodes. Covers network diagnostics, re-routing protocols, and quantum tunneling stabilization techniques.',
+      content:
+        'Steps to diagnose and resolve high latency problems between different operational nodes. Covers network diagnostics, re-routing protocols, and quantum tunneling stabilization techniques.',
       tags: ['troubleshooting', 'network', 'latency', 'system'],
     },
     {
       id: 'kb005',
       category: 'User Interface',
       title: 'Customizing Your Cyber-Dashboard Interface',
-      content: 'Personalize your ProManage dashboard with custom widgets, data stream visualizations, and neon theme adjustments. Access developer mode for advanced UI modifications.',
+      content:
+        'Personalize your ProManage dashboard with custom widgets, data stream visualizations, and neon theme adjustments. Access developer mode for advanced UI modifications.',
       tags: ['ui', 'customization', 'dashboard'],
     },
     {
       id: 'kb006',
       category: 'Financial Operations',
       title: 'Understanding Decentralized Budget Allocation',
-      content: 'An explanation of how decentralized ledger technology (DLT) is used for transparent and immutable budget tracking across projects and departments. Learn to audit smart contracts for financial integrity.',
+      content:
+        'An explanation of how decentralized ledger technology (DLT) is used for transparent and immutable budget tracking across projects and departments. Learn to audit smart contracts for financial integrity.',
       tags: ['finance', 'budget', 'blockchain', 'reports'],
     },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All');
-  const [expandedArticle, setExpandedArticle] = useState(null); // Tracks which article is expanded
+  const [expandedArticle, setExpandedArticle] = useState(null);
 
   const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(articles.map(article => article.category))];
-    return ['All', ...uniqueCategories];
+    const unique = [...new Set(articles.map((a) => a.category))];
+    return ['All', ...unique];
   }, [articles]);
 
-  const filteredArticles = useMemo(() => {
-    let currentArticles = articles;
-
+  const filtered = useMemo(() => {
+    let current = [...articles];
     if (filterCategory !== 'All') {
-      currentArticles = currentArticles.filter(article => article.category === filterCategory);
+      current = current.filter((a) => a.category === filterCategory);
     }
-
     if (searchTerm) {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      currentArticles = currentArticles.filter(article =>
-        article.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-        article.content.toLowerCase().includes(lowerCaseSearchTerm) ||
-        article.tags.some(tag => tag.toLowerCase().includes(lowerCaseSearchTerm))
+      const term = searchTerm.toLowerCase();
+      current = current.filter(
+        (a) =>
+          a.title.toLowerCase().includes(term) ||
+          a.content.toLowerCase().includes(term) ||
+          a.tags.some((tag) => tag.toLowerCase().includes(term))
       );
     }
-    return currentArticles;
-  }, [articles, filterCategory, searchTerm]);
+    return current;
+  }, [articles, searchTerm, filterCategory]);
 
-  const toggleExpand = (id) => {
-    setExpandedArticle(expandedArticle === id ? null : id);
+  const getColor = (cat) => {
+    return {
+      'System Protocols': 'text-fuchsia-400 border-fuchsia-500',
+      'Project Management': 'text-cyan-400 border-cyan-500',
+      'Data Handling': 'text-lime-400 border-lime-500',
+      'Troubleshooting': 'text-red-400 border-red-500',
+      'User Interface': 'text-yellow-400 border-yellow-500',
+      'Financial Operations': 'text-purple-400 border-purple-500',
+    }[cat] || 'text-gray-400 border-gray-500';
   };
 
-  const getCategoryColor = (category) => {
-    switch (category) {
-      case 'System Protocols': return 'border-fuchsia-500 text-fuchsia-400';
-      case 'Project Management': return 'border-cyan-500 text-cyan-400';
-      case 'Data Handling': return 'border-lime-500 text-lime-400';
-      case 'Troubleshooting': return 'border-red-500 text-red-400';
-      case 'User Interface': return 'border-yellow-500 text-yellow-400';
-      case 'Financial Operations': return 'border-purple-500 text-purple-400';
-      default: return 'border-gray-500 text-gray-400';
-    }
+  const toggleExpand = (id) => {
+    setExpandedArticle((prev) => (prev === id ? null : id));
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 font-inter text-gray-100 flex flex-col">
-      {/* Local Styles for Animations */}
+    <div className="min-h-screen bg-zinc-950 text-white font-inter px-6 py-8">
       <style>
         {`
-        @keyframes slide-diagonal-x {
-          0% { transform: translateX(0) translateY(0); }
-          100% { transform: translateX(-100%) translateY(-100%); }
+        @keyframes glow {
+          0% { box-shadow: 0 0 5px #00f5ff, 0 0 10px #ff00f5; }
+          50% { box-shadow: 0 0 15px #00f5ff, 0 0 25px #ff00f5; }
+          100% { box-shadow: 0 0 5px #00f5ff, 0 0 10px #ff00f5; }
         }
-        @keyframes slide-diagonal-x-reverse {
-          0% { transform: translateX(-100%) translateY(-100%); }
-          100% { transform: translateX(0) translateY(0); }
+        .neon-box {
+          background: rgba(28,28,30,0.7);
+          backdrop-filter: blur(10px);
+          border-radius: 1rem;
+          border: 1px solid rgba(255,255,255,0.1);
+          transition: all 0.3s ease-in-out;
         }
-        .animate-slide-diagonal-x-medium { animation: slide-diagonal-x 45s linear infinite; }
-        .animate-slide-diagonal-x-reverse-medium { animation: slide-diagonal-x-reverse 45s linear infinite; }
-
-        /* Border Animation for Knowledge Base main content */
-        @keyframes border-glow-kb {
-          0%, 100% { border-color: rgba(236, 72, 153, 0.5); box-shadow: 0 0 10px rgba(236, 72, 153, 0.3); } /* Fuchsia */
-          33% { border-color: rgba(0, 206, 209, 0.5); box-shadow: 0 0 10px rgba(0, 206, 209, 0.3); } /* Cyan */
-          66% { border-color: rgba(139, 232, 70, 0.5); box-shadow: 0 0 10px rgba(139, 232, 70, 0.3); } /* Lime */
-        }
-        .animate-border-glow-kb {
-            border: 2px solid;
-            animation: border-glow-kb 13s infinite alternate;
-        }
-
-        .category-pill {
-            padding: 0.3rem 0.8rem;
-            border-radius: 9999px; /* Tailwind's rounded-full */
-            border: 1px solid;
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            background-color: rgba(255, 255, 255, 0.05); /* subtle background */
-        }
-        .category-pill:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0, 206, 209, 0.2);
-        }
-        .category-pill.active {
-            background-color: rgba(0, 206, 209, 0.2);
-            box-shadow: 0 0 10px rgba(0, 206, 209, 0.4);
-            color: #00CED1;
-            border-color: #00CED1;
-        }
-
-        .article-card {
-            background-color: #1a1a1a; /* Darker zinc */
-            border-radius: 0.75rem; /* rounded-lg */
-            border: 1px solid #333;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
-        }
-        .article-card.expanded {
-            border-color: #F06292;
-            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.5);
+        .neon-box:hover {
+          animation: glow 2.5s infinite ease-in-out;
         }
         `}
       </style>
 
       {/* Header */}
-      <header className="flex justify-between items-center bg-zinc-900 p-4 border-b border-cyan-600/40 shadow-md shadow-cyan-500/20">
-        <h1 className="text-3xl font-bold text-fuchsia-400">KNOWLEDGE BASE // DATA COMPENDIUM</h1>
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            placeholder="SEARCH ARTICLES..."
-            className="p-2 bg-zinc-800 border border-cyan-600/50 rounded-md text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-200 w-48 md:w-64"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+      <header className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-fuchsia-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent tracking-wide">
+          KNOWLEDGE BASE // DATA COMPENDIUM
+        </h1>
+        <input
+          type="text"
+          placeholder="Search articles..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="bg-zinc-900 border border-cyan-500 px-4 py-2 rounded-md w-full md:w-64 placeholder-gray-400 focus:ring-2 focus:ring-fuchsia-500 focus:outline-none"
+        />
       </header>
 
-      {/* Knowledge Base Content */}
-      <main className="flex-1 overflow-y-auto p-8 bg-zinc-950 relative animate-border-glow-kb"> {/* Apply border animation here */}
-        {/* Animated Background Grid/Lines */}
-        <div className="absolute inset-0 z-0 opacity-5">
-          <svg className="w-[200%] h-[200%]" style={{ transform: 'translateX(-50%) translateY(-50%)' }}>
-            <defs>
-              <pattern id="animated-line-grid-kb" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-                <line x1="0" y1="0" x2="80" y2="80" stroke="currentColor" strokeWidth="1" />
-                <line x1="80" y1="0" x2="0" y2="80" stroke="currentColor" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#animated-line-grid-kb)" className="text-fuchsia-500 animate-slide-diagonal-x-medium" />
-            <rect width="100%" height="100%" fill="url(#animated-line-grid-kb)" className="text-cyan-500 animate-slide-diagonal-x-reverse-medium" style={{ animationDelay: '2s' }} />
-            <rect width="100%" height="100%" fill="url(#animated-line-grid-kb)" className="text-lime-500 animate-slide-diagonal-x-medium" style={{ animationDelay: '4s' }} />
-          </svg>
-        </div>
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-3 mb-10 justify-center">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setFilterCategory(cat)}
+            className={`px-4 py-1 rounded-full border transition-all duration-200 text-sm ${
+              filterCategory === cat
+                ? `bg-cyan-800/30 shadow-md shadow-cyan-500 ${getColor(cat)}`
+                : `bg-zinc-800 ${getColor(cat)} hover:bg-cyan-800/20`
+            }`}
+          >
+            {cat.toUpperCase()}
+          </button>
+        ))}
+      </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto">
-          {/* Category Filters */}
-          <div className="mb-8 flex flex-wrap gap-3 justify-center">
-            {categories.map(category => (
+      {/* Articles */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filtered.length > 0 ? (
+          filtered.map((article) => (
+            <div
+              key={article.id}
+              className={`neon-box p-6 cursor-pointer border ${getColor(
+                article.category
+              )} ${expandedArticle === article.id ? 'ring-2 ring-fuchsia-500' : ''}`}
+              onClick={() => toggleExpand(article.id)}
+            >
+              <h3 className="text-lg font-semibold mb-2">{article.title}</h3>
               <span
-                key={category}
-                className={`category-pill ${getCategoryColor(category)} ${filterCategory === category ? 'active' : ''}`}
-                onClick={() => setFilterCategory(category)}
+                className={`text-xs font-semibold px-2 py-1 rounded-full border ${getColor(
+                  article.category
+                )} bg-zinc-800/50`}
               >
-                {category.toUpperCase()}
+                {article.category}
               </span>
-            ))}
-          </div>
 
-          {/* Article List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredArticles.length > 0 ? (
-              filteredArticles.map(article => (
-                <div
-                  key={article.id}
-                  className={`article-card p-6 cursor-pointer ${expandedArticle === article.id ? 'expanded' : ''}`}
-                  onClick={() => toggleExpand(article.id)}
-                >
-                  <h3 className={`text-xl font-bold mb-3 ${getCategoryColor(article.category)}`}>
-                    {article.title}
-                  </h3>
-                  <p className="text-gray-300 text-sm mb-4">
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getCategoryColor(article.category).replace('border', 'bg').replace('text', 'text')}/20 border`}>
-                      {article.category.toUpperCase()}
-                    </span>
-                  </p>
-                  {expandedArticle === article.id && (
-                    <div className="text-gray-400 text-sm border-t border-zinc-700 pt-4 mt-4">
-                      {article.content}
-                      <div className="flex flex-wrap gap-2 mt-4">
-                        {article.tags.map(tag => (
-                          <span key={tag} className="px-2 py-1 bg-zinc-700 rounded-md text-xs border border-zinc-600/50 text-gray-400">
-                            #{tag.toLowerCase().replace(' ', '_')}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  <div className="flex justify-end mt-4">
-                    <span className="text-fuchsia-400 text-sm font-semibold">
-                      {expandedArticle === article.id ? 'COLLAPSE ▲' : 'EXPAND ▼'}
-                    </span>
+              {expandedArticle === article.id && (
+                <div className="mt-4 text-sm text-gray-300">
+                  <p>{article.content}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {article.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-zinc-800 px-2 py-1 text-xs rounded-md border border-zinc-600 text-gray-400"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center text-gray-500 italic p-8 bg-zinc-800 rounded-lg border border-zinc-700">
-                No articles found matching your criteria.
+              )}
+
+              <div className="mt-4 text-right text-xs text-fuchsia-400 font-bold">
+                {expandedArticle === article.id ? 'COLLAPSE ▲' : 'EXPAND ▼'}
               </div>
-            )}
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500 italic">
+            No articles match your search or category filter.
           </div>
-        </div>
-      </main>
+        )}
+      </div>
     </div>
   );
 }

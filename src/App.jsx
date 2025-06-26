@@ -22,7 +22,7 @@ import { TeamManagement } from "./Components/pages/TeamManagement";
 function App() {
   return (
     <>
-      <FinancialOverview/>
+      <KnowledgeBase/>
     </>
   );
 }
