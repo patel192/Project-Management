@@ -22,9 +22,7 @@ import { TeamManagement } from "./Components/pages/TeamManagement";
 function App() {
   return (
     <>
-      <ActivityLog />
-      <CommunicationHub/>
-      <DashBoard/>
+      <FileManagement/>
     </>
   );
 }
