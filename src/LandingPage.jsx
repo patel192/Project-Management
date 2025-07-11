@@ -19,13 +19,13 @@ export const LandingPage = () => {
 
         <nav className="space-x-4">
           <button
-            className="px-4 py-2 rounded-md border border-purple-700 hover:bg-purple-600 transition hover:text-[#0B1D51]"
+            className="px-4 py-2 rounded-md border border-purple-700 hover:bg-[#8CCDEB] transition hover:text-[#0B1D51]"
             onClick={() => navigate("/login")}
           >
             Login
           </button>
           <button
-            className="px-4 py-2 rounded-md border border-purple-700 hover:bg-purple-700 transition hover:text-[#0B1D51]"
+            className="px-4 py-2 rounded-md border border-purple-700 hover:bg-[#8CCDEB] transition hover:text-[#0B1D51]"
             onClick={() => navigate("/register")}
           >
             Register
