@@ -1,13 +1,15 @@
 import "./App.css";
-import { CustomButton } from "./Components/common/CustomButton";
-import { InputField } from "./Components/common/InputField";
-import { TextArea } from "./Components/common/TextArea";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { LandingPage } from "./LandingPage";
 
 function App() {
   return (
     <>
-      <TextArea/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />}></Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
