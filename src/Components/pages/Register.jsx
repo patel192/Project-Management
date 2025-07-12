@@ -4,8 +4,8 @@ import axios from "axios";
 const uploadToCloudinary = async (file) => {
   const data = new FormData();
   data.append("file", file);
-  data.append("upload_preset", "My_Images"); // your preset name
-  data.append("cloud_name", "dfaou6haj");    // your cloud name
+  data.append("upload_preset", "My_Images"); // enter your preset name
+  data.append("cloud_name", "dfaou6haj");    // enter your cloud name
 
   const res = await fetch("https://api.cloudinary.com/v1_1/dfaou6haj/image/upload", {
     method: "POST",
