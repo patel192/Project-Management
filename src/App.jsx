@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LandingPage } from "./LandingPage";
 import { Register } from "./Components/pages/Register";
 import { Login } from "./Components/pages/Login";
-import {UserDashBoard } from "./Components/dashboard/UserDashBoard";
+import {UserDashBoard } from "./Components/dashboard/user/UserDashBoard";
 function App() {
   return (
     <>

@@ -1,6 +1,6 @@
 import React from 'react'
-import { UserNavbar } from './user/UserNavbar'
-import { UserSidebar } from './user/UserSidebar'
+import { UserNavbar } from './UserNavbar'
+import { UserSidebar } from './UserSidebar'
 export const UserDashBoard = ({ children }) => {
   return (
     <div className="flex">
