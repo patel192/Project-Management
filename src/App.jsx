@@ -4,6 +4,7 @@ import { LandingPage } from "./LandingPage";
 import { Register } from "./Components/pages/Register";
 import { Login } from "./Components/pages/Login";
 import {UserDashBoard } from "./Components/dashboard/user/UserDashBoard";
+
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </>
+    
   );
 }
 

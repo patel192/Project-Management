@@ -48,7 +48,7 @@ export const UserNavbar = () => {
               src={user.profilePic || "https://via.placeholder.com/40"}
               alt="Profile"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="w-10 h-10 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
+              className="w-14 h-13 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
             />
           </>
         )}
