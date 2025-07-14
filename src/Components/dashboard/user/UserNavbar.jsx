@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-export const UserNavbar = () => {
+import { FiMenu } from "react-icons/fi"; // Hamburger icon
+
+export const UserNavbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
-  // Fetch user data from backend
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -38,17 +39,26 @@ export const UserNavbar = () => {
 
   return (
     <nav className="w-full bg-zinc-950 text-[#91C8E4] px-6 py-4 shadow-md flex justify-between items-center">
-      <h1 className="text-xl font-bold text-purple-500">Chatify</h1>
+      <div className="flex items-center gap-4">
+        {/* Sidebar toggle */}
+        <button
+          onClick={toggleSidebar}
+          className="text-2xl text-purple-500 hover:text-purple-400 transition"
+        >
+          <FiMenu />
+        </button>
+        <h1 className="text-xl font-bold text-purple-500">Chatify</h1>
+      </div>
 
       <div className="flex items-center gap-4 relative" ref={menuRef}>
         {user && (
           <>
-            <span className="text-sm text-gray-400">👋 {user.name}</span>
+            <span className="text-sm text-gray-400 hidden sm:inline">👋 {user.name}</span>
             <img
               src={user.profilePic || "https://via.placeholder.com/40"}
               alt="Profile"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="w-14 h-13 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
+              className="w-10 h-10 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
             />
           </>
         )}

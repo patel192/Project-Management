@@ -15,7 +15,7 @@
     "browser-router": "^0.2.0",
     "cors": "^2.8.5",
     "firebase": "^11.9.1",
-    "framer-motion": "^12.19.1",
+    "framer-motion": "^12.23.5",
     "jwt-decode": "^4.0.0",
     "nodemailer": "^7.0.3",
     "react": "^19.1.0",
