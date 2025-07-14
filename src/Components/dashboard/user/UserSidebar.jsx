@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { UserNavbar } from './UserNavbar';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  FaComments,
-  FaUserFriends,
-  FaAddressBook,
+  FaProjectDiagram,
+  FaTasks,
   FaUsers,
-  FaBell,
-  FaUser,
+  FaChartBar,
+  FaCalendarAlt,
+  FaComments,
   FaCog,
-  FaPalette,
   FaQuestionCircle,
   FaSignOutAlt
 } from 'react-icons/fa';
@@ -19,14 +18,13 @@ export const UserSidebar = () => {
   return (
     <aside className="w-64 min-h-screen bg-zinc-900 text-[#91C8E4] p-6 shadow-md">
       <nav className="space-y-4">
-        <SidebarLink to="/dashboard" icon={<FaComments />} label="Dashboard" />
-        <SidebarLink to="/chats" icon={<FaUserFriends />} label="Chats" />
-        <SidebarLink to="/contacts" icon={<FaAddressBook />} label="Contacts" />
-        <SidebarLink to="/groups" icon={<FaUsers />} label="Groups" />
-        <SidebarLink to="/notifications" icon={<FaBell />} label="Notifications" />
-        <SidebarLink to="/profile" icon={<FaUser />} label="Profile" />
+        <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
+        <SidebarLink to="/projects" icon={<FaTasks />} label="Projects" />
+        <SidebarLink to="/teams" icon={<FaUsers />} label="Teams" />
+        <SidebarLink to="/tasks" icon={<FaChartBar />} label="Tasks" />
+        <SidebarLink to="/calendar" icon={<FaCalendarAlt />} label="Calendar" />
+        <SidebarLink to="/messages" icon={<FaComments />} label="Messages" />
         <SidebarLink to="/settings" icon={<FaCog />} label="Settings" />
-        <SidebarLink to="/themes" icon={<FaPalette />} label="Themes" />
         <SidebarLink to="/help" icon={<FaQuestionCircle />} label="Help & Support" />
         <SidebarLink to="/logout" icon={<FaSignOutAlt />} label="Logout" />
       </nav>
