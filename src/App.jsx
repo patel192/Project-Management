@@ -9,6 +9,7 @@ import { Team } from "./Components/project/Team";
 import { Tasks } from "./Components/task/Tasks";
 import { CalendarView } from "./Components/task/CalendarView";
 import { Messages } from "./Components/chat/Messages";
+import { Settings } from "./Components/dashboard/user/Settings";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
            <Route path="tasks" element={<Tasks/>}></Route>
            <Route path="Calendar" element={<CalendarView/>}></Route>
            <Route path="messages" element={<Messages/>}></Route>
+           <Route path="settings" element={<Settings/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
