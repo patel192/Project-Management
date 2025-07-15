@@ -20,7 +20,7 @@ export const UserSidebar = () => {
       <nav className="space-y-4">
         <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
         <SidebarLink to="/dashboard/projects" icon={<FaTasks />} label="Projects" />
-        <SidebarLink to="/teams" icon={<FaUsers />} label="Teams" />
+        <SidebarLink to="/dashboard/teams" icon={<FaUsers />} label="Teams" />
         <SidebarLink to="/tasks" icon={<FaChartBar />} label="Tasks" />
         <SidebarLink to="/calendar" icon={<FaCalendarAlt />} label="Calendar" />
         <SidebarLink to="/messages" icon={<FaComments />} label="Messages" />
