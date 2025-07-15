@@ -16,19 +16,21 @@ import { NavLink } from 'react-router-dom';
 
 export const UserSidebar = () => {
   return (
-    <aside className="w-64 min-h-screen bg-zinc-900 text-[#91C8E4] p-6 shadow-md">
-      <nav className="space-y-4">
+    <div className="w-64 h-screen bg-zinc-900 text-[#91C8E4] p-6 shadow-md flex flex-col">
+      <nav className="space-y-4 flex-1">
         <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
         <SidebarLink to="/dashboard/projects" icon={<FaTasks />} label="Projects" />
         <SidebarLink to="/dashboard/teams" icon={<FaUsers />} label="Teams" />
         <SidebarLink to="/dashboard/tasks" icon={<FaChartBar />} label="Tasks" />
-        <SidebarLink to="/calendar" icon={<FaCalendarAlt />} label="Calendar" />
+        <SidebarLink to="/dashboard/calendar" icon={<FaCalendarAlt />} label="Calendar" />
         <SidebarLink to="/messages" icon={<FaComments />} label="Messages" />
         <SidebarLink to="/settings" icon={<FaCog />} label="Settings" />
         <SidebarLink to="/help" icon={<FaQuestionCircle />} label="Help & Support" />
-        <SidebarLink to="/logout" icon={<FaSignOutAlt />} label="Logout" />
       </nav>
-    </aside>
+      <div className="pt-4 border-t border-zinc-700">
+        <SidebarLink to="/logout" icon={<FaSignOutAlt />} label="Logout" />
+      </div>
+    </div>
   );
 };
 
@@ -52,7 +54,7 @@ export const UserDashBoard = ({ children }) => {
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-zinc-900">
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.div
@@ -60,7 +62,7 @@ export const UserDashBoard = ({ children }) => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-            className="sticky top-0 z-20"
+            className="z-30"
           >
             <UserSidebar />
           </motion.div>

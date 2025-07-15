@@ -7,6 +7,7 @@ import {UserDashBoard } from "./Components/dashboard/user/UserDashBoard";
 import { Projects } from "./Components/pages/Projects";
 import { Team } from "./Components/project/Team";
 import { Tasks } from "./Components/task/Tasks";
+import { CalendarView } from "./Components/task/CalendarView";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
            <Route path="projects" element={<Projects/>}></Route>
            <Route path="teams" element={<Team/>}></Route>
            <Route path="tasks" element={<Tasks/>}></Route>
+           <Route path="Calendar" element={<CalendarView/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
