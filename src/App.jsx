@@ -8,6 +8,7 @@ import { Projects } from "./Components/pages/Projects";
 import { Team } from "./Components/project/Team";
 import { Tasks } from "./Components/task/Tasks";
 import { CalendarView } from "./Components/task/CalendarView";
+import { Messages } from "./Components/chat/Messages";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
            <Route path="teams" element={<Team/>}></Route>
            <Route path="tasks" element={<Tasks/>}></Route>
            <Route path="Calendar" element={<CalendarView/>}></Route>
+           <Route path="messages" element={<Messages/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

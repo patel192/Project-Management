@@ -23,7 +23,7 @@ export const UserSidebar = () => {
         <SidebarLink to="/dashboard/teams" icon={<FaUsers />} label="Teams" />
         <SidebarLink to="/dashboard/tasks" icon={<FaChartBar />} label="Tasks" />
         <SidebarLink to="/dashboard/calendar" icon={<FaCalendarAlt />} label="Calendar" />
-        <SidebarLink to="/messages" icon={<FaComments />} label="Messages" />
+        <SidebarLink to="/dashboard/messages" icon={<FaComments />} label="Messages" />
         <SidebarLink to="/settings" icon={<FaCog />} label="Settings" />
         <SidebarLink to="/help" icon={<FaQuestionCircle />} label="Help & Support" />
       </nav>
@@ -71,7 +71,7 @@ export const UserDashBoard = ({ children }) => {
 
       <div className="flex-1 flex flex-col min-h-screen">
         <UserNavbar toggleSidebar={toggleSidebar} />
-        <main className="p-6 bg-[#0B1D51] flex-1 text-[#91C8E4]">
+        <main className="bg-[#0B1D51] flex-1 text-[#91C8E4]">
           {children}
         </main>
       </div>
