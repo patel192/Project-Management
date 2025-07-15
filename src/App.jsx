@@ -4,6 +4,7 @@ import { LandingPage } from "./LandingPage";
 import { Register } from "./Components/pages/Register";
 import { Login } from "./Components/pages/Login";
 import {UserDashBoard } from "./Components/dashboard/user/UserDashBoard";
+import { Projects } from "./Components/pages/Projects";
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/dashboard" element={<UserDashBoard />}></Route>
+          <Route path="/dashboard" element={<UserDashBoard />}>
+           <Route path="projects" element={<Projects/>}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -19,7 +19,7 @@ export const UserSidebar = () => {
     <aside className="w-64 min-h-screen bg-zinc-900 text-[#91C8E4] p-6 shadow-md">
       <nav className="space-y-4">
         <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
-        <SidebarLink to="/projects" icon={<FaTasks />} label="Projects" />
+        <SidebarLink to="/dashboard/projects" icon={<FaTasks />} label="Projects" />
         <SidebarLink to="/teams" icon={<FaUsers />} label="Teams" />
         <SidebarLink to="/tasks" icon={<FaChartBar />} label="Tasks" />
         <SidebarLink to="/calendar" icon={<FaCalendarAlt />} label="Calendar" />

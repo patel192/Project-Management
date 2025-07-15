@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { UserNavbar } from './UserNavbar';
 import { UserSidebar } from './UserSidebar';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Outlet } from 'react-router-dom';
 
-export const UserDashBoard = ({ children }) => {
+export const UserDashBoard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
@@ -27,7 +28,7 @@ export const UserDashBoard = ({ children }) => {
       <div className="flex-1 flex flex-col min-h-screen">
         <UserNavbar toggleSidebar={toggleSidebar} />
         <main className="p-6 bg-[#0B1D51] flex-1 text-[#91C8E4]">
-          {children}
+          <Outlet/>
         </main>
       </div>
     </div>
