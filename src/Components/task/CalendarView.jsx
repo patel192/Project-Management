@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import { FaTasks } from "react-icons/fa";
+import "/Users/patel/Desktop/Project Management/src/assets/css/calendar.css"
 export const CalendarView = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
