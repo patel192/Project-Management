@@ -21,7 +21,7 @@ export const UserSidebar = () => {
         <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
         <SidebarLink to="/dashboard/projects" icon={<FaTasks />} label="Projects" />
         <SidebarLink to="/dashboard/teams" icon={<FaUsers />} label="Teams" />
-        <SidebarLink to="/tasks" icon={<FaChartBar />} label="Tasks" />
+        <SidebarLink to="/dashboard/tasks" icon={<FaChartBar />} label="Tasks" />
         <SidebarLink to="/calendar" icon={<FaCalendarAlt />} label="Calendar" />
         <SidebarLink to="/messages" icon={<FaComments />} label="Messages" />
         <SidebarLink to="/settings" icon={<FaCog />} label="Settings" />
