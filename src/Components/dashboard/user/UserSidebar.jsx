@@ -25,7 +25,7 @@ export const UserSidebar = () => {
         <SidebarLink to="/dashboard/calendar" icon={<FaCalendarAlt />} label="Calendar" />
         <SidebarLink to="/dashboard/messages" icon={<FaComments />} label="Messages" />
         <SidebarLink to="/dashboard/settings" icon={<FaCog />} label="Settings" />
-        <SidebarLink to="/help" icon={<FaQuestionCircle />} label="Help & Support" />
+        <SidebarLink to="/dashboard/help" icon={<FaQuestionCircle />} label="Help & Support" />
       </nav>
       <div className="pt-4 border-t border-zinc-700">
         <SidebarLink to="/logout" icon={<FaSignOutAlt />} label="Logout" />
