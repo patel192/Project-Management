@@ -13,6 +13,7 @@ import { Settings } from "./Components/dashboard/user/Settings";
 import { Help_Support } from "./Components/dashboard/user/Help&Support";
 import { ProjectDetails } from "./Components/project/ProjectDetails";
 import { TeamDetails } from "./Components/project/team/TeamDetails";
+import { TaskDetails } from "./Components/task/TaskDetails";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="teams" element={<Team />}></Route>
             <Route path="teams/:id" element={<TeamDetails />}></Route>
             <Route path="tasks" element={<Tasks />}></Route>
+            <Route path="tasks/:id" element={<TaskDetails />}></Route>
             <Route path="Calendar" element={<CalendarView />}></Route>
             <Route path="messages" element={<Messages />}></Route>
             <Route path="settings" element={<Settings />}></Route>

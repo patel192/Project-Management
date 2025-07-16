@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaClock, FaUser, FaFlag, FaTasks } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 export const Tasks = () => {
    const [tasks, setTasks] = useState([]);
 
@@ -52,6 +53,7 @@ export const Tasks = () => {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tasks.map((task) => (
+          <Link to={`${task._id}`}>
           <div
             key={task._id}
             className="bg-zinc-900 border border-zinc-700 rounded-xl shadow-lg p-6 hover:shadow-purple-700/50 transition duration-300"
@@ -74,6 +76,7 @@ export const Tasks = () => {
               <p><FaClock className="inline mr-2 text-purple-400" />Due: {new Date(task.dueDate).toLocaleDateString()}</p>
             </div>
           </div>
+          </Link>
         ))}
       </div>
     </div>
