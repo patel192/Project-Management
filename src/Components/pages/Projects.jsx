@@ -29,7 +29,7 @@ export const Projects = () => {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <Link to={`/projects/${project._id}`} key={project._id}>
+            <Link to={`${project._id}`} key={project._id}>
               <div className="bg-zinc-800 rounded-xl shadow-md p-6 hover:shadow-lg hover:ring-2 hover:ring-purple-600 transition duration-300 mb-6 cursor-pointer">
                 <h2 className="text-xl font-bold text-purple-400 mb-2">
                   {project.name}
