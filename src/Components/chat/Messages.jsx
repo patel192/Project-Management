@@ -1,104 +1,152 @@
-import React, { useState } from "react";
-import { FaPaperPlane, FaUserCircle } from "react-icons/fa";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-export const Messages = () => {
-  const [selectedUser, setSelectedUser] = useState("Muhammad");
-  const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState({
-    Muhammad: [
-      { from: "you", text: "Hey Muhammad!" },
-      { from: "Muhammad", text: "Hey! What's up?" }
-    ],
-    Rohan: [
-      { from: "you", text: "Hi Rohan!" },
-      { from: "Rohan", text: "Hello!" }
-    ]
-  });
+export const Messages = ({ currentUser }) => {
+  const [allMessages, setAllMessages] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [messageInput, setMessageInput] = useState('');
+  const [projectUsers, setProjectUsers] = useState([]);
+  const [taskUsers, setTaskUsers] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const { projectId } = useParams();
 
-  const users = Object.keys(messages);
+  useEffect(() => {
+    fetchAllMessages();
+    fetchProjectUsers();
+    fetchTaskUsers();
+    fetchAllUsers();
+  }, []);
 
-  const sendMessage = () => {
-    if (!messageInput.trim()) return;
-    const newMsg = { from: "you", text: messageInput };
-    setMessages((prev) => ({
-      ...prev,
-      [selectedUser]: [...prev[selectedUser], newMsg]
-    }));
-    setMessageInput("");
+  const fetchAllMessages = async () => {
+    try {
+      const res = await axios.get('http://localhost:3000/messages');
+      setAllMessages(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchProjectUsers = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3000/project/${projectId}`);
+      setProjectUsers(res.data.data.teamMembers);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchTaskUsers = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3000/tasks/byproject/${projectId}`);
+      const uniqueUsers = new Set();
+      res.data.data.forEach(task => {
+        if (task.assignedTo) uniqueUsers.add(task.assignedTo);
+      });
+      setTaskUsers(Array.from(uniqueUsers));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchAllUsers = async () => {
+    try {
+      const res = await axios.get('http://localhost:3000/users');
+      setUserList(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    if (!selectedUser || !messageInput.trim()) return;
+    try {
+      await axios.post('http://localhost:3000/message', {
+        sender: currentUser._id,
+        receiver: selectedUser,
+        content: messageInput,
+      });
+      setMessageInput('');
+      fetchAllMessages();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getUserDetails = (id) => {
+    const user = userList.find(u => u._id === id);
+    return user ? `${user.name} (${user.email})` : 'Unknown User';
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-[#91C8E4] overflow-hidden">
-      
-      {/* Sidebar */}
-      <aside className="w-72 bg-[#0B1D51]/90 backdrop-blur-md p-6 border-r border-purple-900 shadow-2xl">
-        <h2 className="text-xl font-bold text-purple-400 mb-4 tracking-wide">
-          Conversations
-        </h2>
-        <div className="space-y-3">
-          {users.map((user) => (
-            <motion.div
-              key={user}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setSelectedUser(user)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer shadow transition ${
-                selectedUser === user
-                  ? "bg-purple-700 text-white"
-                  : "hover:bg-zinc-800"
-              }`}
+    <div className="min-h-screen p-4 bg-zinc-900 text-white font-mono">
+      <h2 className="text-2xl font-bold mb-4">Messages</h2>
+
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold mb-2">Project Team Members</h3>
+        <div className="flex flex-wrap gap-2">
+          {projectUsers.map(id => (
+            <span
+              key={id}
+              onClick={() => setSelectedUser(id)}
+              className={`cursor-pointer px-3 py-1 rounded-full text-sm ${selectedUser === id ? 'bg-blue-600' : 'bg-gray-700'}`}
             >
-              <FaUserCircle className="text-xl" />
-              <span className="text-sm font-medium">{user}</span>
-            </motion.div>
+              {getUserDetails(id)}
+            </span>
           ))}
         </div>
-      </aside>
+      </div>
 
-      {/* Chat Area */}
-      <div className="flex flex-col flex-1 relative bg-[#0B1D51]/80 backdrop-blur-sm">
-        {/* Header */}
-        <header className="sticky top-0 px-8 py-5 bg-zinc-950/70 border-b border-zinc-700 z-10">
-          <h2 className="text-2xl font-semibold text-purple-300">
-            Chat with {selectedUser}
-          </h2>
-        </header>
-
-        {/* Message Display */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-          {messages[selectedUser]?.map((msg, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              className={`max-w-lg px-5 py-3 rounded-xl shadow-md ${
-                msg.from === "you"
-                  ? "bg-purple-600 text-white self-end ml-auto"
-                  : "bg-zinc-800 text-[#91C8E4] self-start"
-              }`}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold mb-2">Users from Tasks</h3>
+        <div className="flex flex-wrap gap-2">
+          {taskUsers.map(id => (
+            <span
+              key={id}
+              onClick={() => setSelectedUser(id)}
+              className={`cursor-pointer px-3 py-1 rounded-full text-sm ${selectedUser === id ? 'bg-green-600' : 'bg-gray-700'}`}
             >
-              {msg.text}
-            </motion.div>
+              {getUserDetails(id)}
+            </span>
           ))}
         </div>
+      </div>
 
-        {/* Input Box */}
-        <footer className="px-6 py-4 bg-zinc-950 border-t border-zinc-700 flex items-center gap-3 sticky bottom-0 z-10">
-          <input
-            type="text"
+      {selectedUser && (
+        <div className="mb-6">
+          <h3 className="text-md mb-2">Send message to <strong>{getUserDetails(selectedUser)}</strong></h3>
+          <textarea
+            rows="3"
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-          />
+            className="w-full p-2 text-black rounded mb-2"
+            placeholder="Type your message..."
+          ></textarea>
           <button
-            onClick={sendMessage}
-            className="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-md transition shadow-lg"
+            onClick={handleSendMessage}
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
           >
-            <FaPaperPlane />
+            Send
           </button>
-        </footer>
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-lg font-semibold mb-2">All Messages</h3>
+        <div className="space-y-3 max-h-[400px] overflow-y-auto">
+          {allMessages.map((msg) => (
+            <div
+              key={msg._id}
+              className="bg-gray-800 p-3 rounded shadow flex flex-col"
+            >
+              <span className="text-sm text-gray-400">
+                From: {getUserDetails(msg.sender)} → To: {getUserDetails(msg.receiver)}
+              </span>
+              <span className="text-md mt-1">{msg.content}</span>
+              <span className="text-xs text-gray-500 mt-1">{new Date(msg.createdAt).toLocaleString()}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
