@@ -1,54 +1,51 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
+import moment from "moment";
 
 export const Messages = () => {
-  const [messageadded, setmessageadded] = useState(false);
-  const [messages, setmessages] = useState([]);
-  const [inputvalue, setinputvalue] = useState("");
-  const userId = localStorage.getItem("userId");
+  const [messageAdded, setMessageAdded] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   const bottomRef = useRef(null);
 
-  // Scroll to bottom when messages update
+  const userId = localStorage.getItem("userId");
+
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!inputValue.trim()) return;
+
+    const messageDetails = {
+      sender: userId,
+      content: inputValue,
+    };
+
+    await axios.post("http://localhost:3000/message", messageDetails);
+    setInputValue("");
+    setMessageAdded(!messageAdded);
+  };
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const res = await axios.get("http://localhost:3000/messages");
+      setMessages(res.data.data || []);
+    };
+    fetchMessages();
+  }, [messageAdded]);
+
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  // Fetch all messages
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await axios.get(`http://localhost:3000/messages`);
-        setmessages(res.data.data);
-        console.log(res)
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-    fetchMessages();
-  }, [messageadded]);
-
-  const handleChange = (event) => {
-    setinputvalue(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!inputvalue.trim()) return;
-
-    const MessageDetails = {
-      sender: userId,
-      content: inputvalue.trim(),
-    };
-
-    try {
-      await axios.post(`http://localhost:3000/message`, MessageDetails);
-      setinputvalue("");
-      setmessageadded((prev) => !prev);
-    } catch (error) {
-      console.error("Error sending message:", error);
-    }
+  // Helper to detect date change
+  const isDifferentDate = (current, previous) => {
+    if (!previous) return true;
+    return !moment(current).isSame(previous, "day");
   };
 
   return (
@@ -57,22 +54,51 @@ export const Messages = () => {
         📢 Group Chat
       </h2>
 
-      <div className="flex-1 overflow-y-auto space-y-3 px-4 py-2 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto space-y-2 px-2 py-1 relative">
         {messages.map((msg, index) => {
-          const isCurrentUser = msg.sender._id === userId;
+          const prevMsg = messages[index - 1];
+          const showDate = isDifferentDate(msg.createdAt, prevMsg?.createdAt);
+          const isCurrentUser = msg.sender === userId;
 
           return (
-            <div key={index} className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+            <div key={msg._id || index} className="relative group">
+              {showDate && (
+                <div className="text-xs text-gray-400 text-center my-2">
+                  {moment(msg.createdAt).format("MMMM Do, YYYY")}
+                </div>
+              )}
+
               <div
-                className={`max-w-xs md:max-w-md px-4 py-2 rounded-2xl shadow-md text-sm 
-                  ${isCurrentUser
-                    ? "bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-br-none"
-                    : "bg-zinc-800 text-gray-200 rounded-bl-none"}`}
+                className={`flex ${
+                  isCurrentUser ? "justify-end" : "justify-start"
+                }`}
               >
-                <p className="whitespace-pre-line break-words">{msg.content}</p>
-                <span className="block text-xs text-zinc-400 mt-1 text-right italic">
-                  {isCurrentUser ? "You" : msg.sender.name}
-                </span>
+                <div className="relative max-w-xs md:max-w-md">
+                  {/* Message Bubble */}
+                  <div
+                    className={`px-4 py-2 rounded-lg text-sm shadow-md ${
+                      isCurrentUser
+                        ? "bg-blue-600 text-white rounded-br-none"
+                        : "bg-zinc-800 text-gray-200 rounded-bl-none"
+                    }`}
+                  >
+                    <p>{msg.content}</p>
+                    
+                      <span className="block text-xs text-zinc-400 mt-1">
+                        {isCurrentUser ? "You" : msg.sender.name}
+                      </span>
+                    
+                  </div>
+
+                  {/* Time on hover */}
+                  <div
+                    className={`absolute ${
+                      isCurrentUser ? "-left-20" : "-right-20"
+                    } top-1/2 -translate-y-1/2 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition`}
+                  >
+                    {moment(msg.createdAt).format("hh:mm A")}
+                  </div>
+                </div>
               </div>
             </div>
           );
@@ -80,14 +106,16 @@ export const Messages = () => {
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-4 flex items-center space-x-2">
+      <form
+        onSubmit={handleSubmit}
+        className="mt-4 flex items-center space-x-2"
+      >
         <input
           type="text"
           placeholder="Type a message..."
           className="flex-1 p-2 rounded-lg bg-zinc-800 border border-zinc-600 outline-none"
           onChange={handleChange}
-          value={inputvalue}
-          autoFocus
+          value={inputValue}
         />
         <button
           type="submit"
