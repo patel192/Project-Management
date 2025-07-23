@@ -6,7 +6,7 @@ export const LandingPage = () => {
     <>
     <div className="min-h-screen bg-[#0B1D51] text-[#91C8E4] flex flex-col">
       {/* Navbar */}
-      <header className="w-full px-6 py-4 flex justify-between items-center shadow-md bg-[#0B1D51]">
+      <header className="w-full px-6 py-4 flex justify-between items-center shadow-md bg-gradient-to-b from-purple-700 to-blue-900">
         {/* Logo Box */}
         <div className="flex items-center space-x-2">
           <img
@@ -43,7 +43,7 @@ export const LandingPage = () => {
         </p>
         <button
           onClick={() => navigate("/register")}
-          className="px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-full text-lg font-medium transition"
+          className="px-6 py-3 bg-purple-600 hover:bg-purple-900 rounded-full text-lg font-medium transition cursor-pointer"
         >
           Get Started
         </button>

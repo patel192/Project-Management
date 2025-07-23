@@ -43,7 +43,7 @@ export const Login = () => {
   };
   return (
     <div className="min-h-screen bg-[#0B1D51] flex items-center justify-center px-4">
-      <div className="bg-zinc-900 p-8 rounded-lg shadow-xl w-full max-w-md text-[#91C8E4]">
+      <div className="bg-zinc-900 p-8 rounded-xl shadow-xl w-full max-w-md text-[#91C8E4]">
         <h2 className="text-3xl font-bold text-purple-500 mb-6 text-center">
           Login
         </h2>
@@ -82,7 +82,7 @@ export const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-semibold transition"
+            className="w-full py-2 bg-gradient-to-b from-purple-700 to-blue-900 cursor-pointer text-white rounded font-semibold transition"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
