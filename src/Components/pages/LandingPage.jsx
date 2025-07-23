@@ -17,7 +17,7 @@ const stagger = {
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-zinc-950 font-inter text-gray-100 overflow-x-hidden">
+    <div className="min-h-screen  font-inter text-gray-100 overflow-x-hidden bg-[url('src\assets\pexels-zaksheuskaya-709412-1616403.jpg')] bg-cover bg-center">
       {/* Local Styles */}
       <style>
         {`

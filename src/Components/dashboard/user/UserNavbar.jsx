@@ -38,7 +38,7 @@ export const UserNavbar = ({ toggleSidebar }) => {
   };
 
   return (
-    <nav className="w-full bg-zinc-950 text-[#91C8E4] px-6 py-4 shadow-md flex justify-between items-center">
+    <nav className="w-full bg-blue-700  text-white px-6 py-4 shadow-md flex justify-between items-center">
       <div className="flex items-center gap-4">
         {/* Sidebar toggle */}
         <button
