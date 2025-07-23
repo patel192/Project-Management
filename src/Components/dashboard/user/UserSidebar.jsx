@@ -16,7 +16,7 @@ import { NavLink } from 'react-router-dom';
 
 export const UserSidebar = () => {
   return (
-    <div className="w-64 h-screen bg-zinc-900 text-[#91C8E4] p-6 shadow-md flex flex-col">
+    <div className="w-64 h-full bg-zinc-900 text-[#91C8E4] p-6 shadow-md flex flex-col">
       <nav className="space-y-4 flex-1">
         <SidebarLink to="/dashboard" icon={<FaProjectDiagram />} label="Dashboard" />
         <SidebarLink to="/dashboard/projects" icon={<FaTasks />} label="Projects" />

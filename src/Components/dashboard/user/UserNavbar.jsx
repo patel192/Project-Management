@@ -50,50 +50,121 @@ export const UserNavbar = ({ toggleSidebar }) => {
         <h1 className="text-xl font-bold text-purple-500">Chatify</h1>
       </div>
 
-      <div className="flex items-center gap-4 relative" ref={menuRef}>
-        {user && (
-          <>
-            <span className="text-sm text-gray-400 hidden sm:inline">👋 {user.name}</span>
-            <img
-              src={user.profilePic || "https://via.placeholder.com/40"}
-              alt="Profile"
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="w-14 h-13 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
-            />
-          </>
-        )}
+    <div
+  className="flex items-center gap-4 relative"
+  onMouseEnter={() => setMenuOpen(true)}
+  onMouseLeave={() => setMenuOpen(false)}
+>
+  {user && (
+    <>
+      <span className="text-sm text-gray-400 hidden sm:inline">
+        👋 {user.name}
+      </span>
+      <img
+        src={user.profilePic || "https://via.placeholder.com/40"}
+        alt="Profile"
+        className="w-14 h-13 rounded-full cursor-pointer border-2 border-purple-600 hover:scale-105 transition"
+      />
+    </>
+  )}
 
-        {menuOpen && (
-          <div className="absolute top-14 right-0 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg w-44 z-50">
-            <ul className="py-2 text-sm text-white">
-              <li
-                className="px-4 py-2 hover:bg-zinc-700 cursor-pointer"
-                onClick={() => {
-                  navigate("/profile");
-                  setMenuOpen(false);
-                }}
-              >
-                View Profile
-              </li>
-              <li
-                className="px-4 py-2 hover:bg-zinc-700 cursor-pointer"
-                onClick={() => {
-                  navigate("/settings");
-                  setMenuOpen(false);
-                }}
-              >
-                Settings
-              </li>
-              <li
-                className="px-4 py-2 text-red-400 hover:bg-zinc-700 hover:text-red-300 cursor-pointer"
-                onClick={handleLogout}
-              >
-                Logout
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
+  {menuOpen && (
+    <div className="absolute top-14 right-0 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg w-44 z-50">
+      <ul className="py-2 text-sm text-white">
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            View profile
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Settings
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Keyboard shortcuts
+            <span className="text-xs text-gray-400"> ⌘K </span>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Company profile
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Team
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Invite colleagues
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Changelog
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Slack Community
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            Support
+          </a>
+        </li>
+        <li>
+          <a
+            href="#0"
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5"
+          >
+            API
+          </a>
+        </li>
+        <li>
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-100 dark:hover:bg-red-500/10"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  )}
+</div>
+
     </nav>
   );
 };
