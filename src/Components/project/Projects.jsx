@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import dayjs from "dayjs";
+
+const statusColors = {
+  planning: "bg-yellow-500",
+  "in-progress": "bg-blue-500",
+  completed: "bg-green-500",
+};
 
 export const Projects = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Fetch all projects from backend
     const fetchProjects = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/projects");
-        setProjects(res.data.data); // Adjust if your API format is different
+        const res = await axios.get(`http://localhost:3000/projects`); // adjust to your actual API endpoint
+        setProjects(res.data.data);
       } catch (err) {
-        console.error("Error fetching projects:", err.message);
+        console.error("Failed to fetch projects:", err);
       }
     };
 
@@ -20,38 +26,63 @@ export const Projects = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0B1D51] text-[#91C8E4] p-6">
-      <h1 className="text-3xl font-bold mb-8 text-purple-400">
-        Projects Overview
+    <div className="min-h-screen bg-[#0A1029] text-[#D0E3FF] px-8 py-12 font-inter">
+      <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-blue-400 mb-12 tracking-wide animate-pulse">
+        🚀 Project Control Center
       </h1>
+
       {projects.length === 0 ? (
-        <p className="text-gray-400">No projects found.</p>
+        <p className="text-gray-500 text-lg italic">No projects available.</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
             <Link to={`${project._id}`} key={project._id}>
-              <div className="bg-zinc-800 rounded-xl shadow-md p-6 hover:shadow-lg hover:ring-2 hover:ring-purple-600 transition duration-300 mb-6 cursor-pointer">
-                <h2 className="text-xl font-bold text-purple-400 mb-2">
-                  {project.name}
-                </h2>
-                <p className="text-sm text-gray-300 mb-3">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.teamMembers?.length > 0 ? (
-                    project.teamMembers.map((member, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-purple-700 text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-purple-600 transition"
-                      >
-                        {member.name || member}
+              <div className="group relative overflow-hidden bg-gradient-to-br from-[#1a1a3f] to-[#0f0f23] p-6 rounded-2xl shadow-xl border border-purple-800 hover:scale-[1.03] transition-transform duration-300 ease-in-out cursor-pointer">
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-800/20 to-pink-500/10 opacity-0 group-hover:opacity-100 transition duration-500 blur-xl z-0" />
+                <div className="relative z-10">
+                  {/* Project Name */}
+                  <h2 className="text-2xl font-bold text-purple-300 mb-2 group-hover:scale-105 transition-transform duration-300">
+                    {project.name}
+                  </h2>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-300 mb-3 line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {/* Created By */}
+                  <p className="text-xs text-gray-400 mb-2 italic">
+                    Created by: <span className="text-[#9ED5FF]">{project.createdBy}</span>
+                  </p>
+
+                  {/* Date Info */}
+                  <div className="flex justify-between text-xs text-gray-400 mb-3">
+                    <span>Start: <span className="text-[#81D4FA]">{dayjs(project.startDate).format('DD MMM YYYY')}</span></span>
+                    <span>End: <span className="text-[#F48FB1]">{dayjs(project.endDate).format('DD MMM YYYY')}</span></span>
+                  </div>
+
+                  {/* Status Pill */}
+                  <span className={`text-white text-xs px-3 py-1 rounded-full font-semibold ${statusColors[project.status]} mb-4 inline-block`}>
+                    {project.status}
+                  </span>
+
+                  {/* Team Members */}
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {project.teamMembers?.length > 0 ? (
+                      project.teamMembers.map((member, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-purple-600 via-fuchsia-700 to-blue-700 rounded-full shadow hover:brightness-110 transition duration-300"
+                        >
+                          {typeof member === "string" ? member : member.name}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-gray-400 text-xs italic">
+                        No members
                       </span>
-                    ))
-                  ) : (
-                    <span className="text-gray-400 text-xs italic">
-                      No members
-                    </span>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </Link>

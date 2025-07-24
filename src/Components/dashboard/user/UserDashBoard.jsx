@@ -27,7 +27,7 @@ export const UserDashBoard = () => {
 
       <div className="flex-1 flex flex-col min-h-screen">
         <UserNavbar toggleSidebar={toggleSidebar} />
-        <main className="p-6 bg-gradient-to-b from-blue-700 to-purple-400 flex-1 text-[#91C8E4]">
+        <main className="p-6 bg-[#0A1029] flex-1 text-[#91C8E4]">
           <Outlet/>
         </main>
       </div>

@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { LandingPage } from "./LandingPage";
 import { Register } from "./Components/pages/Register";
 import { Login } from "./Components/pages/Login";
@@ -14,11 +14,11 @@ import { Help_Support } from "./Components/dashboard/user/Help&Support";
 import { ProjectDetails } from "./Components/project/ProjectDetails";
 import { TeamDetails } from "./Components/project/team/TeamDetails";
 import { TaskDetails } from "./Components/task/TaskDetails";
-
+import { AnimatePresence } from "framer-motion";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
           <Route path="/register" element={<Register />}></Route>
@@ -37,7 +37,7 @@ function App() {
             <Route path="help" element={<Help_Support />}></Route>
           </Route>
         </Routes>
-      </BrowserRouter>
+      </AnimatePresence>
     </>
   );
 }
