@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -11,12 +11,13 @@ const statusColors = {
 
 export const Projects = () => {
   const [projects, setProjects] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/projects`); // adjust to your actual API endpoint
         setProjects(res.data.data);
+        console.log(res.data.data);
       } catch (err) {
         console.error("Failed to fetch projects:", err);
       }
@@ -52,17 +53,34 @@ export const Projects = () => {
 
                   {/* Created By */}
                   <p className="text-xs text-gray-400 mb-2 italic">
-                    Created by: <span className="text-[#9ED5FF]">{project.createdBy}</span>
+                    Created by:{" "}
+                    <span className="text-[#9ED5FF]">
+                      {project.createdBy.name}
+                    </span>
                   </p>
 
                   {/* Date Info */}
                   <div className="flex justify-between text-xs text-gray-400 mb-3">
-                    <span>Start: <span className="text-[#81D4FA]">{dayjs(project.startDate).format('DD MMM YYYY')}</span></span>
-                    <span>End: <span className="text-[#F48FB1]">{dayjs(project.endDate).format('DD MMM YYYY')}</span></span>
+                    <span>
+                      Start:{" "}
+                      <span className="text-[#81D4FA]">
+                        {dayjs(project.startDate).format("DD MMM YYYY")}
+                      </span>
+                    </span>
+                    <span>
+                      End:{" "}
+                      <span className="text-[#F48FB1]">
+                        {dayjs(project.endDate).format("DD MMM YYYY")}
+                      </span>
+                    </span>
                   </div>
 
                   {/* Status Pill */}
-                  <span className={`text-white text-xs px-3 py-1 rounded-full font-semibold ${statusColors[project.status]} mb-4 inline-block`}>
+                  <span
+                    className={`text-white text-xs px-3 py-1 rounded-full font-semibold ${
+                      statusColors[project.status]
+                    } mb-4 inline-block`}
+                  >
                     {project.status}
                   </span>
 
@@ -82,6 +100,24 @@ export const Projects = () => {
                         No members
                       </span>
                     )}
+                  </div>
+                  <div className="mt-5 flex justify-end">
+                    <button onClick={()=>{navigate("/task/:id")}} className="text-sm text-purple-200 group-hover:text-white font-medium flex items-center gap-1 transition-all duration-300 hover:gap-2">
+                      View Tasks
+                      <svg
+                        className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
