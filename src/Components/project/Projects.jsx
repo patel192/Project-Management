@@ -11,7 +11,7 @@ const statusColors = {
 
 export const Projects = () => {
   const [projects, setProjects] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -101,8 +101,17 @@ export const Projects = () => {
                       </span>
                     )}
                   </div>
+
+                  {/* Button (stop event from Link) */}
                   <div className="mt-5 flex justify-end">
-                    <button onClick={()=>{navigate("/task/:id")}} className="text-sm text-purple-200 group-hover:text-white font-medium flex items-center gap-1 transition-all duration-300 hover:gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // ⛔ prevent Link navigation
+                        e.preventDefault(); // ⛔ prevent <Link> default
+                        navigate(`/dashboard/projecttasks/${project._id}`); // ✅ navigate to project tasks
+                      }}
+                      className="text-sm text-purple-200 group-hover:text-white font-medium flex items-center gap-1 transition-all duration-300 hover:gap-2"
+                    >
                       View Tasks
                       <svg
                         className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300"

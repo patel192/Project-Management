@@ -8,7 +8,7 @@ const statusStyles = {
   blocked: "bg-red-600",
 };
 export const ProjectTasks = () => {
-    const { projectId } = useParams();
+  const { projectId } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,8 +16,8 @@ export const ProjectTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get(`/api/tasks/byProject/${projectId}`);
-        setTasks(res.data || []);
+        const res = await axios.get(`http://localhost:3000/tasks/${projectId}`);
+        setTasks(res.data.data || []);
       } catch (err) {
         setError("Failed to load tasks. Try again later.");
       } finally {
@@ -28,14 +28,22 @@ export const ProjectTasks = () => {
     fetchTasks();
   }, [projectId]);
 
-  if (loading) return <div className="text-center text-purple-300 mt-10">Loading tasks...</div>;
-  if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
+  if (loading)
+    return (
+      <div className="text-center text-purple-300 mt-10">Loading tasks...</div>
+    );
+  if (error)
+    return <div className="text-center text-red-500 mt-10">{error}</div>;
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white p-6">
-      <h1 className="text-3xl font-bold mb-6 text-purple-300 text-center">Project Tasks</h1>
+      <h1 className="text-3xl font-bold mb-6 text-purple-300 text-center">
+        Project Tasks
+      </h1>
 
       {tasks.length === 0 ? (
-        <p className="text-gray-400 text-center">No tasks found for this project.</p>
+        <p className="text-gray-400 text-center">
+          No tasks found for this project.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {tasks.map((task) => (
@@ -43,8 +51,12 @@ export const ProjectTasks = () => {
               key={task._id}
               className="bg-gradient-to-br from-[#1a1a3f] to-[#181829] p-5 rounded-xl border border-purple-800 hover:shadow-purple-900/30 hover:scale-[1.02] transition-all duration-300"
             >
-              <h2 className="text-xl font-semibold text-purple-200 mb-2">{task.title}</h2>
-              <p className="text-sm text-gray-300 line-clamp-3 mb-3">{task.description}</p>
+              <h2 className="text-xl font-semibold text-purple-200 mb-2">
+                {task.title}
+              </h2>
+              <p className="text-sm text-gray-300 line-clamp-3 mb-3">
+                {task.description}
+              </p>
 
               <div className="flex justify-between text-xs text-gray-400 mb-2">
                 <span>
@@ -56,7 +68,9 @@ export const ProjectTasks = () => {
               </div>
 
               <span
-                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${statusStyles[task.status] || "bg-gray-600"}`}
+                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white ${
+                  statusStyles[task.status] || "bg-gray-600"
+                }`}
               >
                 {task.status}
               </span>
@@ -65,5 +79,5 @@ export const ProjectTasks = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
