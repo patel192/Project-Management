@@ -17,7 +17,6 @@ export const Projects = () => {
       try {
         const res = await axios.get(`http://localhost:3000/projects`); // adjust to your actual API endpoint
         setProjects(res.data.data);
-        console.log(res.data.data);
       } catch (err) {
         console.error("Failed to fetch projects:", err);
       }
