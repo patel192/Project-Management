@@ -28,7 +28,7 @@ export const CalendarView = () => {
     );
   };
   return (
-    <div className="min-h-screen bg-[#0B1D51] px-6 py-10 text-[#91C8E4]">
+    <div className="min-h-screen bg-[#0A1029] px-6 py-10 text-[#91C8E4]">
       <h1 className="text-3xl font-bold mb-8 flex items-center gap-2 text-purple-400">
         <FaTasks /> Task Calendar
       </h1>

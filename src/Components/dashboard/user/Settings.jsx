@@ -22,7 +22,7 @@ export const Settings = () => {
     alert("Settings saved!");
   };
   return (
-    <div className="min-h-screen bg-[#0B1D51] p-10 text-[#91C8E4]">
+    <div className="min-h-screen bg-[#0A1029] p-10 text-[#91C8E4]">
       <motion.div
         className="max-w-3xl mx-auto bg-zinc-900 p-8 rounded-xl shadow-2xl border border-purple-800"
         initial={{ opacity: 0, y: 20 }}

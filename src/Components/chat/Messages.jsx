@@ -49,7 +49,7 @@ export const Messages = () => {
   };
 
   return (
-    <div className="w-full h-[90vh] bg-zinc-900 text-white flex flex-col rounded-xl shadow-md border border-zinc-700 p-4">
+    <div className="w-full h-[90vh] bg-[#0A1029] text-white flex flex-col rounded-xl shadow-md border border-zinc-700 p-4">
       <h2 className="text-xl font-bold mb-4 border-b border-zinc-700 pb-2">
         📢 Group Chat
       </h2>

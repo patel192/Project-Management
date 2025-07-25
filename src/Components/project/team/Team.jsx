@@ -51,7 +51,7 @@ export const Team = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1D51] text-[#91C8E4] p-8">
+    <div className="min-h-screen bg-[#0A1029] text-[#91C8E4] p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-purple-400">Teams</h1>
         <button
