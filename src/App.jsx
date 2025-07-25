@@ -16,6 +16,7 @@ import { TeamDetails } from "./Components/project/team/TeamDetails";
 import { TaskDetails } from "./Components/task/TaskDetails";
 import { AnimatePresence } from "framer-motion";
 import { ProjectTasks } from "./Components/project/ProjectTasks";
+import { MainDashboard } from "./Components/dashboard/user/MainDashboard";
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/dashboard" element={<UserDashBoard />}>
+        <Route path="" element={<MainDashboard/>}></Route>
             <Route path="projects" element={<Projects />} />
             <Route path="projecttasks/:projectId" element={<ProjectTasks />} />
             <Route path="projects/:id" element={<ProjectDetails />}></Route>
