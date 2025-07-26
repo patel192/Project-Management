@@ -4,15 +4,17 @@ import { FaClock, FaUser, FaFlag, FaTasks } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 export const Tasks = () => {
    const [tasks, setTasks] = useState([]);
-
+  const userId = localStorage.getItem("userId")
   const fetchTasks = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/tasks");
-      setTasks(res.data.data);
-    } catch (err) {
-      console.error("Failed to fetch tasks:", err.message);
-    }
-  };
+  try {
+    const res = await axios.get(`http://localhost:3000/usertasks/${userId}`);
+    setTasks(res.data.data); // ✅ Only the task array
+    console.log("Fetched Tasks:", res.data.data);
+  } catch (err) {
+    console.error("Failed to fetch tasks:", err.message);
+  }
+};
+
 
   useEffect(() => {
     fetchTasks();

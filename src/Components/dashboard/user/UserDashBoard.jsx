@@ -25,7 +25,7 @@ export const UserDashBoard = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen bg-[#0A1029]">
         <UserNavbar toggleSidebar={toggleSidebar} />
         <main className="p-6 bg-[#0A1029] flex-1 text-[#91C8E4]">
           <Outlet/>
